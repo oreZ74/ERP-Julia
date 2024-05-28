@@ -1,4 +1,19 @@
 \documentclass[a4paper,12pt, titlepage]{article}
-
 \input{settings.tex}
+
+\begin{document}
 \input{./chapter/frontcover.tex}
+
+
+\newpage
+\pagestyle{empty}
+\tableofcontents
+
+
+
+\newpage
+\pagestyle{plain}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{./chapter/introduction.tex}	
+\end{document}
