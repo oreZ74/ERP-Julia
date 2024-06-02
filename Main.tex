@@ -1,19 +1,26 @@
 \documentclass[a4paper,12pt, titlepage]{article}
 \input{settings.tex}
 
+
+
 \begin{document}
-\input{./chapter/frontcover.tex}
+\input{./chapter/00-frontcover.tex}
 
-
+\onehalfspacing
 \newpage
 \pagestyle{empty}
 \tableofcontents
-
-
-
 \newpage
 \pagestyle{plain}
-\pagenumbering{arabic}
+\pagenumbering{roman}
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\input{./chapter/Abbildungsverzeichnis.tex}
+
 \setcounter{page}{1}
-\input{./chapter/introduction.tex}	
+\newpage
+\pagenumbering{arabic}
+\input{./chapter/01-Einleitung.tex}
+\input{./chapter/02-Basis.tex}
+\input{./chapter/03-Code.tex}
+\input{./chapter/04-Result.tex}
 \end{document}
