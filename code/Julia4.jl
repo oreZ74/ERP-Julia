@@ -1,12 +1,14 @@
 using HTTP
 using JSON
 using Plots
-using Statistics
+
 
 # Funktion zum Abrufen der Daten für ein bestimmtes Jahr und Indikator
 function get_indicator_data(country_code::String, indicator::String, start_year::Int, end_year::Int)
     # URL für den API-Aufruf zur Abrufung der Daten von der Weltbank
-    url = "http://api.worldbank.org/v2/country/$country_code/indicator/$indicator?date=$start_year:$end_year&format=json&per_page=1000"
+    url = "http://api.worldbank.org/v2/country/$country_code/indicator/"
+    url *= "$indicator?date=$start_year:$end_year&format=json&per_page=1000"
+  
     # HTTP-GET-Anfrage an die URL
     response = HTTP.get(url)
     # Überprüfen, ob die Anfrage erfolgreich war
@@ -41,7 +43,7 @@ years = start_year:end_year # Jahre von 1960 bis 2022
 birth_rates = [NaN for _ in years] # Initialisiere Geburtenraten mit NaN
 death_rates = [NaN for _ in years] # Initialisiere Sterberaten mit NaN
 historical_population = [NaN for _ in years] # Initialisiere historische Bevölkerung mit NaN
-
+println(birth_data)
 # Extrahieren der Geburtenraten
 for record in birth_data[2]
     year = parse(Int, record["date"]) # Jahr aus dem Datensatz parsen
@@ -71,7 +73,7 @@ function calculate_growth_rate(birth_rates::Vector{Float64}, death_rates::Vector
     growth_rates = [NaN for _ in birth_rates] # Initialisiere Wachstumsraten mit NaN
     for i in 1:length(birth_rates)
         if !isnan(birth_rates[i]) && !isnan(death_rates[i]) # Überprüfen, ob Geburten- und Sterberate gültige Werte haben
-            growth_rates[i] = (birth_rates[i] - death_rates[i]) / 10 # Berechnung der Wachstumsrate
+            growth_rates[i] = (birth_rates[i] - death_rates[i]) / 10 # Berechnung der Wachstumsrate in Prozent
         end
     end
     return growth_rates
@@ -81,7 +83,6 @@ growth_rates = calculate_growth_rate(birth_rates, death_rates) # Berechne die j�
 
 # Prognose der zukünftigen Wachstumsraten mit Annahme einer sinkenden Bevölkerung
 function extend_growth_rates(growth_rates::Vector{Float64}, future_years::Int)
-    avg_growth_rate = mean(skipmissing(growth_rates)) # Durchschnittliche Wachstumsrate berechnen, unter Auslassung von NaN
     # Nehmen wir an, dass die Wachstumsrate jedes Jahr leicht negativ wird, um eine moderate Abnahme der Bevölkerung zu erreichen
     extended_growth_rates = vcat(growth_rates, [0.1 - i*0.03 for i in 1:future_years])
     return extended_growth_rates
@@ -98,7 +99,7 @@ function forecast_population(start_population::Float64, growth_rates::Vector{Flo
     return future_population
 end
 
-# Beispielhafte Startpopulation und Prognose bis 2040
+
 start_population = historical_population[end] # Startpopulation ist die letzte bekannte Bevölkerungszahl
 future_years = 2022:2100 # Zukunftsjahre von 2022 bis 2100
 extended_growth_rates = extend_growth_rates(growth_rates, length(future_years)) # Erweitere die Wachstumsraten um die Zukunftsjahre

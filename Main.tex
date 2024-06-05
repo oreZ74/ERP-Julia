@@ -8,19 +8,37 @@
 
 \onehalfspacing
 \newpage
+\pagenumbering{gobble}
 \pagestyle{empty}
 \tableofcontents
 \newpage
 \pagestyle{plain}
 \pagenumbering{roman}
 \addcontentsline{toc}{section}{Abbildungsverzeichnis}
-\input{./chapter/Abbildungsverzeichnis.tex}
+\input{./chapter/I-Abbildungsverzeichnis.tex}
+
+% Quellcodeverzeichnis
+\newpage
+\listoflistings
+\newpage
+
 
 \setcounter{page}{1}
 \newpage
 \pagenumbering{arabic}
+
+\renewcommand{\headrulewidth}{0pt}
+\newpage
+
+\renewcommand{\headrulewidth}{0.4pt}
+\pagestyle{fancy}
+\fancyhead[L]{\textit{Hochschule Bochum}}
+\fancyhead[C]{Erweiterte Programmiersprachen}
+\fancyhead[R]{\textit{Emre Akarsu}}
+
 \input{./chapter/01-Einleitung.tex}
 \input{./chapter/02-Basis.tex}
 \input{./chapter/03-Code.tex}
 \input{./chapter/04-Result.tex}
+\input{./chapter/05-Anhang.tex}
 \end{document}
